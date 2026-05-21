@@ -5,6 +5,7 @@ package com.model;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Message implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -34,5 +35,17 @@ public class Message implements Serializable {
         return timestamp;
     }
 
-    
+    // Formatting for the LocalDateTime
+    public String getFormattedTime() {
+
+        DateTimeFormatter customFormatDate = DateTimeFormatter.ofPattern("'['MM-dd-yyyy HH:mm:ss']'");
+
+        String formattedDateTime = timestamp.format(customFormatDate);
+
+        return formattedDateTime;
+    }
+
+    public String toString() {
+        return getFormattedTime() + " " + this.sender + ": " + messageContent;
+    }
 }
