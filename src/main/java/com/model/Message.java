@@ -12,11 +12,11 @@ public class Message implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    private String sender;
+    private User sender;
     private String messageContent;
     private LocalDateTime timestamp;
 
-    public Message(String sender, String messageContent) {
+    public Message(User sender, String messageContent) {
         this.sender = sender;
         this.messageContent = messageContent;
 
@@ -25,7 +25,7 @@ public class Message implements Serializable {
     }
 
     // Getters
-    public String getSender() {
+    public User getSender() {
         return sender;
     }
 
@@ -48,6 +48,6 @@ public class Message implements Serializable {
     }
 
     public String toString() {
-        return getFormattedTime() + " " + this.sender + ": " + messageContent;
+        return getFormattedTime() + " " + this.sender.getName() + ": " + messageContent;
     }
 }
