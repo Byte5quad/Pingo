@@ -29,7 +29,7 @@ public class Message implements Serializable {
         return sender;
     }
 
-    public String messageContent() {
+    public String getMessageContent() {
         return messageContent;
     }
 
@@ -42,9 +42,7 @@ public class Message implements Serializable {
 
         DateTimeFormatter customFormatDate = DateTimeFormatter.ofPattern("'['MM-dd-yyyy HH:mm:ss']'");
 
-        String formattedDateTime = timestamp.format(customFormatDate);
-
-        return formattedDateTime;
+		return timestamp.format(customFormatDate);
     }
 
     public String toString() {

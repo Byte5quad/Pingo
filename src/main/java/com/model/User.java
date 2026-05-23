@@ -1,6 +1,12 @@
 package com.model;
 
-public class User {
+import java.io.Serial;
+import java.io.Serializable;
+
+public class User implements Serializable {
+	@Serial
+	private static final long serialVersionUID = 1L;
+
 	private String name;
 	private int id;
 
@@ -19,5 +25,24 @@ public class User {
 
 	public int getId() {
 		return id;
+	}
+
+	@Override
+	public String toString() {
+		return "User: [name=" + name + " , id=" + id + "]";
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o instanceof User user) {
+			return this.name.equals(user.name) && this.id == user.id;
+		}
+		return false;
+	}
+
+	@Override
+	public int hashCode() {
+		return Integer.hashCode(this.id);
 	}
 }
