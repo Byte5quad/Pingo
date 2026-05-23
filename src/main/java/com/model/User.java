@@ -29,14 +29,14 @@ public class User implements Serializable {
 
 	@Override
 	public String toString() {
-		return "User: [name=" + name + " , id=" + id + "]";
+		return "User: [name=" + name + ", id=" + id + "]";
 	}
 
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
 		if (o instanceof User user) {
-			return this.name.equals(user.name) && this.id == user.id;
+			return this.id == user.getId();
 		}
 		return false;
 	}
