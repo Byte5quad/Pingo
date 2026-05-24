@@ -5,6 +5,9 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import java.io.IOException;
 
 public class HelloController {
 
@@ -36,13 +39,23 @@ public class HelloController {
     }
 
     private void handleVillageClick(String villageId, String villageName) {
-        topbarTitle.setText(villageName.trim());
+        String cleanName = villageName.replaceAll("[^a-zA-Z0-9\\s]", "").trim();
+        topbarTitle.setText(cleanName);
 
-        Label placeholder = new Label("You selected: " + villageName.trim() + "\nCourse communities coming soon!");
-        placeholder.getStyleClass().add("placeholder-label");
-        placeholder.setWrapText(true);
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("village-view.fxml"));
+            Parent villageView = loader.load();
 
-        contentArea.getChildren().setAll(placeholder);
+            VillageViewController controller = loader.getController();
+            controller.setVillageData(cleanName);
+
+            contentArea.getChildren().setAll(villageView);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            Label errorLabel = new Label("Error loading view for " + cleanName);
+            contentArea.getChildren().setAll(errorLabel);
+        }
     }
 
     private void showHome() {
