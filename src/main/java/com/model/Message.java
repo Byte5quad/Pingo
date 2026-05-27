@@ -3,18 +3,20 @@ package com.model;
 // serializable needed so that we can pass the Message object
 // to the socket in an object output stream
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class Message implements Serializable {
+    @Serial
     private static final long serialVersionUID = 1L;
 
-    private String sender;
+    private User sender;
     private String messageContent;
     private LocalDateTime timestamp;
 
-    public Message(String sender, String messageContent) {
+    public Message(User sender, String messageContent) {
         this.sender = sender;
         this.messageContent = messageContent;
 
@@ -23,11 +25,11 @@ public class Message implements Serializable {
     }
 
     // Getters
-    public String getSender() {
+    public User getSender() {
         return sender;
     }
 
-    public String messageContent() {
+    public String getMessageContent() {
         return messageContent;
     }
 
@@ -40,12 +42,10 @@ public class Message implements Serializable {
 
         DateTimeFormatter customFormatDate = DateTimeFormatter.ofPattern("'['MM-dd-yyyy HH:mm:ss']'");
 
-        String formattedDateTime = timestamp.format(customFormatDate);
-
-        return formattedDateTime;
+		return timestamp.format(customFormatDate);
     }
 
     public String toString() {
-        return getFormattedTime() + " " + this.sender + ": " + messageContent;
+        return getFormattedTime() + " " + this.sender.getName() + ": " + messageContent;
     }
 }
