@@ -20,16 +20,17 @@ public class Client {
     private boolean isConnected = false;
 
     public void connect(User clientUser) {
-        try(Socket socket = new Socket(SERVER_IP, SERVER_PORT)) {
+        try {
+            this.clientSocket = new Socket(SERVER_IP, SERVER_PORT);
             System.out.println("Successfully connected to the chat.");
             this.isConnected = true;
 
             // Creating the output stream
-            this.out = new ObjectOutputStream(socket.getOutputStream());
+            this.out = new ObjectOutputStream(clientSocket.getOutputStream());
             this.out.flush(); // flush the buffer
 
             // Creating the input stream
-            this.in = new ObjectInputStream(socket.getInputStream());
+            this.in = new ObjectInputStream(clientSocket.getInputStream());
 
 
         } catch(IOException e) {
@@ -46,7 +47,8 @@ public class Client {
                 out.flush();
             }
         } catch (IOException e) {
-            System.out.println("Error sending message." + e.getMessage());
+            e.printStackTrace();
+            System.out.println("Error sending message.");
         }
     }
 }
