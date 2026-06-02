@@ -6,26 +6,31 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 import com.model.Message;
+import com.model.User;
 
-public class ClientServer {
+public class Client {
 
     // TEMPORARY SERVER_ADDRESS, switch to an IP address/ non local host address.
     private static final String SERVER_IP = "localhost";
     private static final int SERVER_PORT = 8080;
 
+    private Socket clientSocket;
     private ObjectInputStream in;
     private ObjectOutputStream out;
+    private boolean isConnected = false;
 
-    public void main(String[] args) {
+    public void connect(User clientUser) {
         try(Socket socket = new Socket(SERVER_IP, SERVER_PORT)) {
             System.out.println("Successfully connected to the chat.");
+            this.isConnected = true;
 
-            // Creating the input and output streams for the message objects
-            out = new ObjectOutputStream(socket.getOutputStream());
-            in = new ObjectInputStream(socket.getInputStream());
+            // Creating the output stream
+            this.out = new ObjectOutputStream(socket.getOutputStream());
+            this.out.flush(); // flush the buffer
 
-            Message testingMessage = new Message("Ryan", "This is a testing message for sockets." );
-            sendMessage(testingMessage);
+            // Creating the input stream
+            this.in = new ObjectInputStream(socket.getInputStream());
+
 
         } catch(IOException e) {
             System.out.println("Error with the client. ");
@@ -36,11 +41,12 @@ public class ClientServer {
     public void sendMessage(Message message) {
         // temporary code for message sending, will probably need to change for MVP
         try {
-            out.writeObject(message);
-            // REMOVE LATER
-            System.out.println("DEBUG: Message sent.");
+            if(isConnected) {
+                out.writeObject(message);
+                out.flush();
+            }
         } catch (IOException e) {
-            System.out.println("Error sending message. ");
+            System.out.println("Error sending message." + e.getMessage());
         }
     }
 }
