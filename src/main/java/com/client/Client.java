@@ -32,6 +32,8 @@ public class Client {
             // Creating the input stream
             this.in = new ObjectInputStream(clientSocket.getInputStream());
 
+            out.writeObject(localUser);
+            out.flush();
 
         } catch(IOException e) {
             System.out.println("Error with the client. ");
