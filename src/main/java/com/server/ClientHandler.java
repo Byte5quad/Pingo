@@ -34,7 +34,7 @@ public class ClientHandler implements Runnable {
             // Read the User object sent when a Client connects to a port.
             clientUser = (User) in.readObject();
 
-            // TODO: Read messages sent from the Client. 
+            // TODO: Read messages sent from this client and send it to all other clients using sendMessageToAll.
 
             // compiler complains without the ClassNotFoundException being caught
         } catch(IOException  | ClassNotFoundException e) {
@@ -60,9 +60,17 @@ public class ClientHandler implements Runnable {
     }
 
     /*
-    TODO: sendMessageToAll(Message message)
-    Description: Does a for-each loop through each clientHandler in clients, and sends a message back to the Client.
+    sendMessageToAll(Message message)
+    Description: Does a for-each loop through each clientHandler in clients, and sends a message to all other clients
+                 connected to the server (apart from the local clientHandler).
     */
+    public void sendMessageToAll(Message message) {
+        for(ClientHandler client: clients) {
+            if(client != this) {
+                client.sendMessage(message);
+            }
+        }
+    }
 
 
 }
