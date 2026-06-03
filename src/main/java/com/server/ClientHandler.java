@@ -34,8 +34,7 @@ public class ClientHandler implements Runnable {
             // Read the User object sent when a Client connects to a port.
             clientUser = (User) in.readObject();
 
-            // TODO: Read messages sent from the Client. Perhaps do something similar to
-            //
+            // TODO: Read messages sent from the Client. 
 
             // compiler complains without the ClassNotFoundException being caught
         } catch(IOException  | ClassNotFoundException e) {
