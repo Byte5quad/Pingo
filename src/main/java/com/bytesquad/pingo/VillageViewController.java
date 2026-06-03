@@ -32,6 +32,20 @@ public class VillageViewController {
         }
     }
 
+    private void openChatForDepartment(String departmentName) {
+        villageHeaderTitle.setText(departmentName );
+        villageHeaderSub.setText("Live chat channel for " + departmentName + " students.");
+        
+        departmentsGrid.getChildren().clear();
+        
+        ChatComponent chatUI = new ChatComponent();
+        chatUI.setPrefWidth(700);
+        chatUI.setMinHeight(400);
+        chatUI.setMaxHeight(400);
+        
+        departmentsGrid.getChildren().add(chatUI);
+    }
+
     private VBox createDepartmentCard(String title, String count) {
         VBox card = new VBox();
         
@@ -60,6 +74,8 @@ public class VillageViewController {
         countLabel.setStyle("-fx-text-fill: #94a3b8; -fx-font-size: 13px;");
 
         card.getChildren().addAll(titleLabel, countLabel);
+
+        card.setOnMouseClicked(e -> openChatForDepartment(title));
 
         card.setOnMouseEntered(e -> card.setStyle(
             "-fx-background-color: #f1f5f9;" +
