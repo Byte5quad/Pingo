@@ -12,7 +12,7 @@ public class Client {
 
     // TEMPORARY SERVER_ADDRESS, switch to an IP address/ non local host address.
     private static final String SERVER_IP = "localhost";
-    private static final int SERVER_PORT = 8080;
+    private static final int SERVER_PORT = 6000;
 
     private Socket clientSocket;
     private ObjectInputStream in;
@@ -32,6 +32,7 @@ public class Client {
             // Creating the input stream
             this.in = new ObjectInputStream(clientSocket.getInputStream());
 
+            // Send the client user's object
             out.writeObject(localUser);
             out.flush();
 
