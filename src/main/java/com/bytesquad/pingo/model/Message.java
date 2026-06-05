@@ -1,4 +1,4 @@
-package com.model;
+package com.bytesquad.pingo.model;
 
 // serializable needed so that we can pass the Message object
 // to the socket in an object output stream

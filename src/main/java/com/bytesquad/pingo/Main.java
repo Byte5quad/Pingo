@@ -1,7 +1,7 @@
 package com.bytesquad.pingo;
 
-import com.model.Message;
-import com.model.User;
+import com.bytesquad.pingo.model.Message;
+import com.bytesquad.pingo.model.User;
 
 public class Main {
     public static void main(String[] args) {

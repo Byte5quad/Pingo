@@ -1,9 +1,10 @@
 plugins {
     id 'java'
     id 'application'
+    id 'org.openjfx.javafxplugin' version '0.1.0'
 }
 
-group = 'org.bytesquad'
+group = 'com.bytesquad'
 version = '1.0-SNAPSHOT'
 
 repositories {
@@ -11,7 +12,12 @@ repositories {
 }
 
 application {
-    mainClass = 'Main'
+    mainClass = 'com.bytesquad.pingo.Launcher'
+}
+
+javafx {
+    version = "21"
+    modules = ['javafx.controls', 'javafx.fxml']
 }
 
 dependencies {
