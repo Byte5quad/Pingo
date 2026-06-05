@@ -34,8 +34,8 @@ public class ClientHandler implements Runnable {
             clientUser = (User) in.readObject();
 
             //Broadcast join to all clients
-            // TODO: does this need to be a message class or does just sending a string message work?
-            out.writeObject(clientUser.getName().concat(" has joined the chat"));
+            // TODO: Have this announcement be broadcast by a "Server" User
+            sendMessageToAll(new Message(clientUser, " has joined the chat"));
 
             //Read messages sent from this client and send it to all other clients using sendMessageToAll.
 			Message message;
