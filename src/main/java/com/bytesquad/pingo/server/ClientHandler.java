@@ -1,4 +1,4 @@
-package com.server;
+package com.bytesquad.pingo.server;
 
 import com.model.User;
 import com.model.Message;
@@ -68,7 +68,6 @@ public class ClientHandler implements Runnable {
                 out.flush();
 
         } catch (IOException e) {
-            e.printStackTrace();
             System.out.println("Error sending message.");
         }
     }

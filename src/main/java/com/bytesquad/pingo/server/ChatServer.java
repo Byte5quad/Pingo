@@ -1,4 +1,4 @@
-package com.server;
+package com.bytesquad.pingo.server;
 
 import java.net.*;
 import java.io.*;
