@@ -1,9 +1,7 @@
 package com.client;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.Socket;
+import java.io.*;
+import java.net.*;
 
 import com.model.Message;
 import com.model.User;
@@ -15,11 +13,11 @@ public class Client {
     private static final int SERVER_PORT = 6000;
 
     private Socket clientSocket;
-    private ObjectInputStream in;
     private ObjectOutputStream out;
+    private ObjectInputStream in;
     private boolean isConnected = false;
 
-    public void connect(User clientUser) {
+    public void connect(User localUser) {
         try {
             this.clientSocket = new Socket(SERVER_IP, SERVER_PORT);
             System.out.println("Successfully connected to the chat.");
@@ -50,6 +48,7 @@ public class Client {
                 out.flush();
             }
         } catch (IOException e) {
+            isConnected = false;
             e.printStackTrace();
             System.out.println("Error sending message.");
         }

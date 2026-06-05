@@ -45,6 +45,7 @@ public class Message implements Serializable {
 		return timestamp.format(customFormatDate);
     }
 
+    @Override
     public String toString() {
         return getFormattedTime() + " " + this.sender.getName() + ": " + messageContent;
     }

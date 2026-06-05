@@ -15,7 +15,7 @@ public class ClientHandler implements Runnable {
     private Socket socket;
     private User clientUser;
 
-    public ClientHandler(Socket socket, List<ClientHandler> clientsList) {
+	public ClientHandler(Socket socket, List<ClientHandler> clientsList) {
         this.socket = socket;       // Holds the socket created by ChatServer
         this.clients = clientsList; // Holds the ArrayList containing all ClientHandlers.
     }
@@ -24,7 +24,6 @@ public class ClientHandler implements Runnable {
     @Override
     public void run() {
         try {
-
             // Create new object and input streams for communication (conceptually, ClientHandler is the Server "endpoint");
             out = new ObjectOutputStream(socket.getOutputStream());
             out.flush();
@@ -34,12 +33,27 @@ public class ClientHandler implements Runnable {
             // Read the User object sent when a Client connects to a port.
             clientUser = (User) in.readObject();
 
-            // TODO: Read messages sent from this client and send it to all other clients using sendMessageToAll.
+            //Broadcast join to all clients
+            // TODO: does this need to be a message class or does just sending a string message work?
+            out.writeObject(clientUser.getName().concat(" has joined the chat"));
+
+            //Read messages sent from this client and send it to all other clients using sendMessageToAll.
+			Message message;
+			while ((message = (Message) in.readObject()) != null) {
+                sendMessageToAll(message);
+                out.flush();
+            }
 
             // compiler complains without the ClassNotFoundException being caught
-        } catch(IOException  | ClassNotFoundException e) {
+        } catch(IOException | ClassNotFoundException e) {
             e.printStackTrace();
-        }
+            clients.remove(this);
+			try {
+				socket.close();
+			} catch (IOException ex) {
+				ex.printStackTrace();
+			}
+		}
     }
 
     /*
@@ -65,9 +79,11 @@ public class ClientHandler implements Runnable {
                  connected to the server (apart from the local clientHandler).
     */
     public void sendMessageToAll(Message message) {
-        for(ClientHandler client: clients) {
-            if(client != this) {
-                client.sendMessage(message);
+        synchronized (clients) {
+            for (ClientHandler client : clients) {
+                if (client != this) {
+                    client.sendMessage(message);
+                }
             }
         }
     }
