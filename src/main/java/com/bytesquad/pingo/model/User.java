@@ -1,4 +1,4 @@
-package com.model;
+package com.bytesquad.pingo.model;
 
 import java.io.Serial;
 import java.io.Serializable;

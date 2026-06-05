@@ -1,5 +1,7 @@
 package com.model;
 
+import com.bytesquad.pingo.model.Message;
+import com.bytesquad.pingo.model.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
