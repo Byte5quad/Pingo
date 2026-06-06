@@ -3,8 +3,8 @@ package com.bytesquad.pingo.client;
 import java.io.*;
 import java.net.*;
 
-import com.model.Message;
-import com.model.User;
+import com.bytesquad.pingo.model.Message;
+import com.bytesquad.pingo.model.User;
 
 public class Client {
 
@@ -33,6 +33,22 @@ public class Client {
             // Send the client user's object
             out.writeObject(localUser);
             out.flush();
+
+
+            // Create a new thread to read any incoming messages from other ClientHandlers.
+            Thread inputThread = new Thread(() -> {
+                Message inputMessage;
+                try {
+                    while(isConnected) {
+                        Message inputMessage = (Message) in.readObject();
+
+                        // TODO: CHANGE THIS TO UPDATE THE GUI, POSSIBLY using Platform.runLater, or some through some other kind of implementation.
+                        System.out.println(inputMessage);
+                    }
+                }
+            });
+
+            inputThread.start();
 
         } catch(IOException e) {
             System.out.println("Error with the client. ");
