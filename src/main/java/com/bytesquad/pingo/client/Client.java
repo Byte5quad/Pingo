@@ -45,6 +45,8 @@ public class Client {
                         // TODO: CHANGE THIS TO UPDATE THE GUI, POSSIBLY using Platform.runLater, or some through some other kind of implementation.
                         System.out.println(inputMessage);
                     }
+                } catch(IOExeception | ClassNotFoundException e) {
+                    System.out.println("Error reading message.");
                 }
             });
 
