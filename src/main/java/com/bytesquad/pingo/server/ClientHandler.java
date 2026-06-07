@@ -1,7 +1,7 @@
 package com.bytesquad.pingo.server;
 
-import com.model.User;
-import com.model.Message;
+import com.bytesquad.pingo.model.User;
+import com.bytesquad.pingo.model.Message;
 
 import java.net.*;
 import java.io.*;

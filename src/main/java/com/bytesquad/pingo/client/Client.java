@@ -40,12 +40,12 @@ public class Client {
                 Message inputMessage;
                 try {
                     while(isConnected) {
-                        Message inputMessage = (Message) in.readObject();
+                        inputMessage = (Message) in.readObject();
 
                         // TODO: CHANGE THIS TO UPDATE THE GUI, POSSIBLY using Platform.runLater, or some through some other kind of implementation.
                         System.out.println(inputMessage);
                     }
-                } catch(IOExeception | ClassNotFoundException e) {
+                } catch(IOException | ClassNotFoundException e) {
                     System.out.println("Error reading message.");
                 }
             });
