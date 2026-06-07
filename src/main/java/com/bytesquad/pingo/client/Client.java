@@ -51,7 +51,7 @@ public class Client {
                         // CHANGED: Calls the ChatController's addReceivedMessage() to update the chat UI with the received message.
                         controller.addReceivedMessage(inputMessage);
                     }
-                } catch(Exception e) {
+                } catch(IOException | ClassNotFoundException e) {
                     System.out.println("Error reading message.");
                 }
             });
