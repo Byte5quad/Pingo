@@ -59,6 +59,7 @@ public class Client {
             inputThread.start();
 
         } catch(IOException e) {
+            e.printStackTrace();
             System.out.println("Error with the client. ");
         }
 

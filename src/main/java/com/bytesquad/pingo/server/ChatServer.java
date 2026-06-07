@@ -10,7 +10,8 @@ public class ChatServer {
     // Synchronized list since we are using multiple threads
     private static List<ClientHandler> clients = Collections.synchronizedList(new ArrayList<>());
 
-    public static void main(String[] args) {
+    public static void startServer() {
+        Thread serverThread = new Thread(() -> {
         try(ServerSocket serverSocket = new ServerSocket(PORT)) {
             System.out.println("Connected to the server.");
             while(true) {
@@ -27,5 +28,10 @@ public class ChatServer {
             System.out.println("Error creating server.");
             e.printStackTrace();
         }
+    }, "ChatServer"); // for debugging 
+    // Sets the server thread as a background thread.
+    serverThread.setDaemon(true);
+    // Starts the server thread.
+    serverThread.start();
     }
 }
