@@ -1,11 +1,17 @@
 package com.bytesquad.pingo;
 
+import com.bytesquad.pingo.model.User;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 
+
 public class VillageViewController {
+
+    // TODO: Figure out what the flow of the VillageViewContainer is going to be. How is localUser going to be passed to the ChatController constructor?
+    private User localUser;
 
     @FXML private Label villageHeaderTitle;
     @FXML private Label villageHeaderSub;
@@ -14,7 +20,7 @@ public class VillageViewController {
     public void setVillageData(String villageName) {
         villageHeaderTitle.setText(villageName);
         villageHeaderSub.setText("Welcome to the " + villageName + " hub. Select a department to view available courses.");
-        
+
         departmentsGrid.getChildren().clear();
 
         if (villageName.contains("De Anza") || villageName.contains("Foothill")) {
@@ -35,27 +41,30 @@ public class VillageViewController {
     private void openChatForDepartment(String departmentName) {
         villageHeaderTitle.setText(departmentName );
         villageHeaderSub.setText("Live chat channel for " + departmentName + " students.");
-        
+
         departmentsGrid.getChildren().clear();
-        
-        ChatComponent chatUI = new ChatComponent();
+
+        // TODO: Call the ChatController constructor with the localUser parameter.
+        ChatController controller = new ChatController(localUser);
+        ChatComponent chatUI = controller.getChatComponent();
+
         chatUI.setPrefWidth(700);
         chatUI.setMinHeight(400);
         chatUI.setMaxHeight(400);
-        
+
         departmentsGrid.getChildren().add(chatUI);
     }
 
     private VBox createDepartmentCard(String title, String count) {
         VBox card = new VBox();
-        
+
         card.setPrefWidth(230);
-        card.setPrefHeight(90); 
+        card.setPrefHeight(90);
         card.setMinHeight(90);
         card.setMaxHeight(90);
-        
+
         card.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
-        
+
         card.setStyle(
             "-fx-background-color: #f8fafc;" +
             "-fx-padding: 20;" +
@@ -86,7 +95,7 @@ public class VillageViewController {
             "-fx-border-radius: 12;" +
             "-fx-cursor: hand;"
         ));
-        
+
         card.setOnMouseExited(e -> card.setStyle(
             "-fx-background-color: #f8fafc;" +
             "-fx-padding: 20;" +

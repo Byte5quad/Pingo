@@ -5,6 +5,7 @@ import java.net.*;
 
 import com.bytesquad.pingo.model.Message;
 import com.bytesquad.pingo.model.User;
+import com.bytesquad.pingo.ChatController;
 
 public class Client {
 
@@ -16,6 +17,11 @@ public class Client {
     private ObjectOutputStream out;
     private ObjectInputStream in;
     private boolean isConnected = false;
+    private ChatController controller;
+
+    public Client(ChatController controller) {
+        this.controller = controller;
+    }
 
     public void connect(User localUser) {
         try {
@@ -40,12 +46,12 @@ public class Client {
                 Message inputMessage;
                 try {
                     while(isConnected) {
-                        Message inputMessage = (Message) in.readObject();
+                        inputMessage = (Message) in.readObject();
 
-                        // TODO: CHANGE THIS TO UPDATE THE GUI, POSSIBLY using Platform.runLater, or some through some other kind of implementation.
-                        System.out.println(inputMessage);
+                        // CHANGED: Calls the ChatController's addReceivedMessage() to update the chat UI with the received message.
+                        controller.addReceivedMessage(inputMessage);
                     }
-                } catch(IOExeception | ClassNotFoundException e) {
+                } catch(Exception e) {
                     System.out.println("Error reading message.");
                 }
             });

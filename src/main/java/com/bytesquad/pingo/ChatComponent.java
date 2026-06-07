@@ -14,20 +14,22 @@ import javafx.scene.text.TextFlow;
 
 public class ChatComponent extends VBox {
 
+    private ChatController controller;
     private VBox messageContainer;
     private ScrollPane scrollPane;
     private TextField messageField;
     private Button sendButton;
 
-    public ChatComponent() {
+    public ChatComponent(ChatController controller) {
+        this.controller = controller;
         this.setSpacing(10);
         this.setPadding(new Insets(10));
         this.setStyle("-fx-background-color: #f4f4f4;");
 
         scrollPane = new ScrollPane();
-        messageContainer = new VBox(10); 
+        messageContainer = new VBox(10);
         messageContainer.setPadding(new Insets(10));
-        
+
         scrollPane.setContent(messageContainer);
         scrollPane.setFitToWidth(true);
         VBox.setVgrow(scrollPane, Priority.ALWAYS);
@@ -42,8 +44,8 @@ public class ChatComponent extends VBox {
 
         Runnable handleSendAction = () -> {
             String text = messageField.getText().trim();
-            if (!text.isEmpty()) {
-                appendMessage(text, true);
+            if (!text.isEmpty() && controller != null) {
+                controller.sendChatMessage(text);
                 messageField.clear();
             }
         };
@@ -62,7 +64,7 @@ public class ChatComponent extends VBox {
             bubble.setPadding(new Insets(8, 12, 8, 12));
 
             HBox messageRow = new HBox(bubble);
-            
+
             if (isCurrentUser) {
                 bubble.setStyle("-fx-background-color: #0078d4; -fx-background-radius: 10;");
                 messageText.setStyle("-fx-fill: white;");
