@@ -3,6 +3,7 @@ package com.bytesquad.pingo;
 import com.bytesquad.pingo.client.Client;
 import com.bytesquad.pingo.model.User;
 import com.bytesquad.pingo.model.Message;
+import com.bytesquad.pingo.server.ChatServer;
 
 public class ChatController {
     private User localUser;
@@ -32,8 +33,22 @@ public class ChatController {
     */
     public void addReceivedMessage(Message message) {
         // Add received messages from other clients to the chat UI.
-        boolean isMessageLocal = message.getSender().equals(localUser);
-        chatUI.appendMessage(message.getMessageContent(), isMessageLocal);
+        boolean isFromLocalUser = message.getSender().equals(localUser);
+
+        String display;
+        switch (message.getMessageType()) {
+            case PRIVATE -> {
+                if (isFromLocalUser) {
+                    String sender = ChatServer.getClient(message.getRecipientId()).getClientUser().getName();
+                    display = "[DM -> " + sender + "] " + message.getMessageContent();
+                } else {
+                    display = "[DM from " + message.getSender().getName() + "] " + message.getMessageContent();
+                }
+            }
+            case PUBLIC -> display = message.getSender().getName() + ": " + message.getMessageContent();
+            default -> throw new IllegalArgumentException("Invalid message type");
+        }
+        chatUI.appendMessage(display, isFromLocalUser);
     }
 
 
@@ -48,6 +63,11 @@ public class ChatController {
         // Send the message to the server (other handlers) and append to local UI.
         localClient.sendMessage(message);
         chatUI.appendMessage(messageText, true);
+    }
+
+    public void sendPrivateMessage(String messageText, int recipientId) {
+        Message message = new Message(localUser, messageText, recipientId);
+        localClient.sendMessage(message);
     }
 
     public User getLocalUser() { return this.localUser; }

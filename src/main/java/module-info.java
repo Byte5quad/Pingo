@@ -8,4 +8,7 @@ module com.bytesquad.pingo {
     opens com.bytesquad.pingo.model to javafx.fxml;
 
     exports com.bytesquad.pingo;
+    exports com.bytesquad.pingo.model;
+    exports com.bytesquad.pingo.client;
+    exports com.bytesquad.pingo.server;
 }

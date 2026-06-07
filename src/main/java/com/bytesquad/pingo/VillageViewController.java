@@ -17,7 +17,8 @@ public class VillageViewController {
     @FXML private Label villageHeaderSub;
     @FXML private TilePane departmentsGrid;
 
-    public void setVillageData(String villageName) {
+    public void setVillageData(String villageName, User user) {
+        this.localUser = user;
         villageHeaderTitle.setText(villageName);
         villageHeaderSub.setText("Welcome to the " + villageName + " hub. Select a department to view available courses.");
 

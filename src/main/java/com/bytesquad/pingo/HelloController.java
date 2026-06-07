@@ -1,5 +1,6 @@
 package com.bytesquad.pingo;
 
+import com.bytesquad.pingo.model.User;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
@@ -47,7 +48,10 @@ public class HelloController {
             Parent villageView = loader.load();
 
             VillageViewController controller = loader.getController();
-            controller.setVillageData(cleanName);
+
+            // TODO: Replace with the login system once complete
+            User tempUser = new User("Aaron", 1);
+            controller.setVillageData(cleanName, tempUser);
 
             contentArea.getChildren().setAll(villageView);
 
