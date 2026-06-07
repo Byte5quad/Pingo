@@ -53,6 +53,7 @@ public class VillageViewController {
         chatUI.setMaxHeight(400);
 
         departmentsGrid.getChildren().add(chatUI);
+        controller.start();
     }
 
     private VBox createDepartmentCard(String title, String count) {
