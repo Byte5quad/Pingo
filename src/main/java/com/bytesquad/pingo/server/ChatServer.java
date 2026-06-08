@@ -45,6 +45,10 @@ public class ChatServer {
         return clients.get(userId);
     }
 
+    public static List<ClientHandler> getClients() {
+        return clients.values().stream().toList();
+    }
+
     public static void broadcastToAll(Message message, ClientHandler sender) {
         synchronized (clients) {
             for (ClientHandler client : clients.values()) {
