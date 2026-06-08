@@ -20,8 +20,6 @@ public class HelloController {
 
     @FXML
     public void initialize() {
-        // tesing
-        SessionManager.getInstance().setLocalUser(new com.bytesquad.pingo.model.User("Saba", 1));
         for (int i = 0; i < villages.length; i++) {
             final String villageId = villageIds[i];
             final String villageName = villages[i];
