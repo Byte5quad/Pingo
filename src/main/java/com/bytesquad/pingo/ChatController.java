@@ -33,8 +33,12 @@ public class ChatController {
     public void addReceivedMessage(Message message) {
         // Add received messages from other clients to the chat UI.
         boolean isMessageLocal = message.getSender().equals(localUser);
-        chatUI.appendMessage(message.getMessageContent(), isMessageLocal);
+        // added this to get the sender's name and timestamp for display in the chat UI
+        String senderName = message.getSender().getName(); 
+        String timestamp = java.time.LocalTime.now().format(java.time.format.DateTimeFormatter.ofPattern("HH:mm"));
+        chatUI.appendMessage(senderName, timestamp, message.getMessageContent(), isMessageLocal);
     }
+    
 
 
     /*
@@ -47,7 +51,8 @@ public class ChatController {
 
         // Send the message to the server (other handlers) and append to local UI.
         localClient.sendMessage(message);
-        chatUI.appendMessage(messageText, true);
+        String currentTimestamp = java.time.LocalTime.now().format(java.time.format.DateTimeFormatter.ofPattern("HH:mm"));
+        chatUI.appendMessage(localUser.getName(), currentTimestamp, messageText, true);
     }
 
     public User getLocalUser() { return this.localUser; }

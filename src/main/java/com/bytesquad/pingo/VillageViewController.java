@@ -1,21 +1,22 @@
 package com.bytesquad.pingo;
 
 import com.bytesquad.pingo.model.User;
-
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 
-
 public class VillageViewController {
 
-    // TODO: Figure out what the flow of the VillageViewContainer is going to be. How is localUser going to be passed to the ChatController constructor?
     private User localUser;
 
     @FXML private Label villageHeaderTitle;
     @FXML private Label villageHeaderSub;
     @FXML private TilePane departmentsGrid;
+
+    public void setLocalUser(User user) {
+        this.localUser = user;
+    }
 
     public void setVillageData(String villageName) {
         villageHeaderTitle.setText(villageName);
@@ -39,12 +40,21 @@ public class VillageViewController {
     }
 
     private void openChatForDepartment(String departmentName) {
-        villageHeaderTitle.setText(departmentName );
+        villageHeaderTitle.setText(departmentName);
         villageHeaderSub.setText("Live chat channel for " + departmentName + " students.");
 
         departmentsGrid.getChildren().clear();
 
-        // TODO: Call the ChatController constructor with the localUser parameter.
+        if (this.localUser == null) {
+            this.localUser = SessionManager.getInstance().getLocalUser();
+        }
+
+        if (this.localUser == null) {
+            System.err.println("Error: Cannot start chat. Local user is null.");
+            departmentsGrid.getChildren().add(new Label("⚠️ Please log in to view chat channels."));
+            return;
+        }
+
         ChatController controller = new ChatController(localUser);
         ChatComponent chatUI = controller.getChatComponent();
 

@@ -20,6 +20,8 @@ public class HelloController {
 
     @FXML
     public void initialize() {
+        // tesing
+        SessionManager.getInstance().setLocalUser(new com.bytesquad.pingo.model.User("Saba", 1));
         for (int i = 0; i < villages.length; i++) {
             final String villageId = villageIds[i];
             final String villageName = villages[i];
@@ -48,6 +50,12 @@ public class HelloController {
 
             VillageViewController controller = loader.getController();
             controller.setVillageData(cleanName);
+
+            // Set up the local user data fromsession manager
+            SessionManager session = SessionManager.getInstance();
+            if (session.getLocalUser() != null) {
+                controller.setLocalUser(session.getLocalUser());
+            }
 
             contentArea.getChildren().setAll(villageView);
 

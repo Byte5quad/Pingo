@@ -57,21 +57,37 @@ public class ChatComponent extends VBox {
         this.getChildren().addAll(scrollPane, inputLayout);
     }
 
-    public void appendMessage(String text, boolean isCurrentUser) {
+    public void appendMessage(String senderName, String timestamp, String text, boolean isCurrentUser) {
         Platform.runLater(() -> {
+            // 1. Create the text styling for the message body
             Text messageText = new Text(text);
             TextFlow bubble = new TextFlow(messageText);
             bubble.setPadding(new Insets(8, 12, 8, 12));
 
-            HBox messageRow = new HBox(bubble);
+            javafx.scene.layout.HBox headerRow = new javafx.scene.layout.HBox(8); // 8px gap
+            
+            Text nameText = new Text(isCurrentUser ? "You" : senderName);
+            nameText.setStyle("-fx-font-weight: bold; -fx-font-size: 11px;");
+            
+            Text timeText = new Text(timestamp != null ? timestamp : "");
+            timeText.setStyle("-fx-font-size: 9px; -fx-fill: #7f8c8d;"); 
+            javafx.scene.layout.HBox.setMargin(timeText, new Insets(2, 0, 0, 0));
+            headerRow.getChildren().addAll(nameText, timeText);
+
+            VBox stackedMessageBlock = new VBox(4); 
+            stackedMessageBlock.getChildren().addAll(headerRow, bubble);
+
+            HBox messageRow = new HBox(stackedMessageBlock);
 
             if (isCurrentUser) {
                 bubble.setStyle("-fx-background-color: #0078d4; -fx-background-radius: 10;");
                 messageText.setStyle("-fx-fill: white;");
+                headerRow.setAlignment(Pos.CENTER_RIGHT);
                 messageRow.setAlignment(Pos.CENTER_RIGHT);
             } else {
                 bubble.setStyle("-fx-background-color: #e1e1e1; -fx-background-radius: 10;");
                 messageText.setStyle("-fx-fill: black;");
+                headerRow.setAlignment(Pos.CENTER_LEFT);
                 messageRow.setAlignment(Pos.CENTER_LEFT);
             }
 
