@@ -14,6 +14,8 @@ public class HelloController {
     @FXML private VBox villageList;
     @FXML private StackPane contentArea;
     @FXML private Label topbarTitle;
+    @FXML private Label profileNameLabel; 
+    @FXML private Label profileSubLabel;
 
     private String[] villages = {"🏫  De Anza Village", "🎓  Foothill Village", "✈️  Transfer Village"};
     private String[] villageIds = {"deanza", "foothill", "transfer"};
@@ -33,6 +35,13 @@ public class HelloController {
             item.getChildren().add(label);
             item.setOnMouseClicked(e -> handleVillageClick(villageId, villageName));
             villageList.getChildren().add(item);
+        }
+        SessionManager session = SessionManager.getInstance();
+        if (session.getLocalUser() != null && profileNameLabel != null) {
+            profileNameLabel.setText(session.getLocalUser().getName());
+            if (profileSubLabel != null) {
+                profileSubLabel.setText("ID: " + session.getLocalUser().getId());
+            }
         }
 
         showHome();

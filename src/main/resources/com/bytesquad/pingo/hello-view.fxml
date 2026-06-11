@@ -21,8 +21,8 @@
             <HBox styleClass="sidebar-user" spacing="10" alignment="CENTER_LEFT">
                 <Label text="S" styleClass="user-avatar"/>
                 <VBox spacing="2">
-                    <Label text="Saba" styleClass="user-name"/>
-                    <Label text="De Anza College" styleClass="user-status"/>
+                    <Label fx:id="profileNameLabel" text="Username" styleClass="user-name"/>
+                    <Label fx:id="profileSubLabel" text="Connecting..." styleClass="user-status"/>
                 </VBox>
             </HBox>
         </VBox>

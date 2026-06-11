@@ -5,8 +5,8 @@ import com.bytesquad.pingo.model.User;
 public class SessionManager {
     private static SessionManager instance;
     private User localUser;
-    private String serverIp;
-    private int serverPort;
+    private String serverIp = "localhost";
+    private int serverPort = 1234;
 
     private SessionManager() {}
 
