@@ -9,10 +9,6 @@ import com.bytesquad.pingo.ChatController;
 
 public class Client {
 
-    // TEMPORARY SERVER_ADDRESS, switch to an IP address/ non local host address.
-    private static final String SERVER_IP = "localhost";
-    private static final int SERVER_PORT = 6000;
-
     private Socket clientSocket;
     private ObjectOutputStream out;
     private ObjectInputStream in;
@@ -23,9 +19,9 @@ public class Client {
         this.controller = controller;
     }
 
-    public void connect(User localUser) {
+    public void connect(User localUser, String serverIP, int port) {
         try {
-            this.clientSocket = new Socket(SERVER_IP, SERVER_PORT);
+            this.clientSocket = new Socket(serverIP, port);
             System.out.println("Successfully connected to the chat.");
             this.isConnected = true;
 

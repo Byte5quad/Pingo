@@ -10,6 +10,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import java.io.IOException;
+import com.bytesquad.pingo.server.ChatServer;
 
 public class LoginController {
 
@@ -45,13 +46,16 @@ public class LoginController {
 
             Stage stage = (Stage) loginButton.getScene().getWindow();
             Scene dashboardScene = new Scene(dashboardRoot);
-            
+
             if (getClass().getResource("styles.css") != null) {
                 dashboardScene.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
             }
             stage.setScene(dashboardScene);
             stage.centerOnScreen();
             stage.show();
+
+            // Open the server on the specified port (after login)
+            ChatServer.startServer(port);
 
         } catch (NumberFormatException e) {
             showError("User ID and Port must be valid numbers!");

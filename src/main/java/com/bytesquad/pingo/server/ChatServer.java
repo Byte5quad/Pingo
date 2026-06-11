@@ -5,14 +5,13 @@ import java.io.*;
 import java.util.*;
 
 public class ChatServer {
-    private static final int PORT = 6000;
 
     // Synchronized list since we are using multiple threads
     private static List<ClientHandler> clients = Collections.synchronizedList(new ArrayList<>());
 
-    public static void startServer() {
+    public static void startServer(int port) {
         Thread serverThread = new Thread(() -> {
-        try(ServerSocket serverSocket = new ServerSocket(PORT)) {
+        try(ServerSocket serverSocket = new ServerSocket(port)) {
             System.out.println("Connected to the server.");
             while(true) {
                 Socket socket = serverSocket.accept();
@@ -28,7 +27,7 @@ public class ChatServer {
             System.out.println("Error creating server.");
             e.printStackTrace();
         }
-    }, "ChatServer"); // for debugging 
+    }, "ChatServer"); // for debugging
     // Sets the server thread as a background thread.
     serverThread.setDaemon(true);
     // Starts the server thread.

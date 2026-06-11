@@ -3,6 +3,7 @@ package com.bytesquad.pingo;
 import com.bytesquad.pingo.client.Client;
 import com.bytesquad.pingo.model.User;
 import com.bytesquad.pingo.model.Message;
+import com.bytesquad.pingo.SessionManager;
 
 public class ChatController {
     private User localUser;
@@ -22,8 +23,14 @@ public class ChatController {
       Starts the chat by connecting the local client to the server. Used in VillageViewController.java.
     */
     public void start() {
+        // Create a new SessionManager object with all of the local user data.
+        SessionManager session = SessionManager.getInstance();
+
+        // Get the user inputted IP and port number.
+        String serverIP = session.getServerIp();
+        int serverPort = session.getServerPort();
         // Call the Client's connect() method to create the client socket and start listening for messages.
-        localClient.connect(localUser);
+        localClient.connect(localUser, serverIP, serverPort);
     }
 
     /*
@@ -34,11 +41,11 @@ public class ChatController {
         // Add received messages from other clients to the chat UI.
         boolean isMessageLocal = message.getSender().equals(localUser);
         // added this to get the sender's name and timestamp for display in the chat UI
-        String senderName = message.getSender().getName(); 
+        String senderName = message.getSender().getName();
         String timestamp = java.time.LocalTime.now().format(java.time.format.DateTimeFormatter.ofPattern("HH:mm"));
         chatUI.appendMessage(senderName, timestamp, message.getMessageContent(), isMessageLocal);
     }
-    
+
 
 
     /*
