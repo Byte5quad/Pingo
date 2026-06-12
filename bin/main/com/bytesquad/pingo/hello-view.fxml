@@ -3,7 +3,7 @@
 <?import javafx.scene.control.*?>
 <HBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
-      fx:controller="client.HelloController"
+      fx:controller="HelloController"
       prefWidth="1200" prefHeight="750"
       styleClass="root"
       stylesheets="@styles.css">

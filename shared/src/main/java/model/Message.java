@@ -12,16 +12,29 @@ public class Message implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
+    public enum MessageType {
+        PUBLIC, PRIVATE
+    }
+
     private User sender;
     private String messageContent;
     private LocalDateTime timestamp;
+    private MessageType type;
+    private int recipientId;
 
-    public Message(User sender, String messageContent) {
+    public Message(User sender, String messageContent, int recipientId) {
         this.sender = sender;
         this.messageContent = messageContent;
+        this.recipientId = recipientId;
+        this.type = MessageType.PRIVATE;
 
         // Gets the current date/time from the system
         this.timestamp = LocalDateTime.now();
+    }
+
+    public Message(User sender, String messageContent) {
+        this(sender, messageContent, -1);
+        this.type = MessageType.PUBLIC;
     }
 
     // Getters
@@ -35,6 +48,14 @@ public class Message implements Serializable {
 
     public LocalDateTime getTimestamp() {
         return timestamp;
+    }
+
+    public MessageType getType() {
+        return type;
+    }
+
+    public int getRecipientId() {
+        return recipientId;
     }
 
     // Formatting for the LocalDateTime

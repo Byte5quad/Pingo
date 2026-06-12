@@ -1,5 +1,3 @@
-package client;
-
 import java.io.*;
 import java.net.*;
 
@@ -43,7 +41,7 @@ public class Client {
                     while(isConnected) {
                         inputMessage = (Message) in.readObject();
 
-                        // CHANGED: Calls the client.ChatController's addReceivedMessage() to update the chat UI with the received message.
+                        // CHANGED: Calls the ChatController's addReceivedMessage() to update the chat UI with the received message.
                         controller.addReceivedMessage(inputMessage);
                     }
                 } catch(IOException | ClassNotFoundException e) {

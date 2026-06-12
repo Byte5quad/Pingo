@@ -1,5 +1,3 @@
-package client;
-
 import model.User;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

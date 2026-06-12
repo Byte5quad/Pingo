@@ -4,7 +4,7 @@
 
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
-      fx:controller="client.VillageViewController"
+      fx:controller="VillageViewController"
       spacing="30" style="-fx-padding: 40; -fx-background-color: #ffffff;"
       VBox.vgrow="ALWAYS">
 

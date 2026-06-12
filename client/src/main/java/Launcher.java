@@ -1,4 +1,3 @@
-import client.HelloApplication;
 import javafx.application.Application;
 
 public class Launcher {

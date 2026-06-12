@@ -1,5 +1,7 @@
 package server;
 
+import model.Message;
+
 import java.net.*;
 import java.io.*;
 import java.util.*;
@@ -7,7 +9,7 @@ import java.util.*;
 public class ChatServer {
 
     // Synchronized list since we are using multiple threads
-    private static List<ClientHandler> clients = Collections.synchronizedList(new ArrayList<>());
+    private static Map<Integer, ClientHandler> clients = Collections.synchronizedMap(new HashMap<>());
 
     public static void startServer(int port) {
         Thread serverThread = new Thread(() -> {
@@ -16,12 +18,8 @@ public class ChatServer {
             while(true) {
                 Socket socket = serverSocket.accept();
 
-                // Create a new client handler for the newly created socket
-                ClientHandler clientHandler = new ClientHandler(socket, clients);
-                clients.add(clientHandler);
-
                 // Create a new thread for the clientHandler
-                new Thread(clientHandler).start();
+                new Thread(new ClientHandler(socket)).start();
             }
         } catch(IOException e) {
             System.out.println("Error creating server.");
@@ -32,5 +30,31 @@ public class ChatServer {
     serverThread.setDaemon(true);
     // Starts the server thread.
     serverThread.start();
+    }
+
+    public static void registerClient(int userId, ClientHandler clientHandler) {
+        clients.put(userId, clientHandler);
+    }
+
+    public static void removeClient(int userId) {
+        clients.remove(userId);
+    }
+
+    public static ClientHandler getClient(int userId) {
+        return clients.get(userId);
+    }
+
+    public static List<ClientHandler> getClients() {
+        return clients.values().stream().toList();
+    }
+
+    public static void broadcastToAll(Message message, ClientHandler sender) {
+        synchronized (clients) {
+            for (ClientHandler client : clients.values()) {
+                if (client != sender) {
+                    client.sendMessage(message);
+                }
+            }
+        }
     }
 }

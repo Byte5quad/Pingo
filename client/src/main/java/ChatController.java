@@ -1,5 +1,3 @@
-package client;
-
 import model.User;
 import model.Message;
 
@@ -10,30 +8,30 @@ public class ChatController {
 
     public ChatController(User localUser) {
         this.localUser = localUser;
-        // Create a new client.ChatComponent, pass in this client.ChatController object.
+        // Create a new ChatComponent, pass in this ChatController object.
         this.chatUI = new ChatComponent(this);
-        // Call the client.Client constructor, and pass in this instance of client.ChatController
+        // Call the Client constructor, and pass in this instance of ChatController
         this.localClient = new Client(this);
     }
 
     /*
       start()
-      Starts the chat by connecting the local client to the server. Used in client.VillageViewController.java.
+      Starts the chat by connecting the local client to the server. Used in VillageViewController.java.
     */
     public void start() {
-        // Create a new client.SessionManager object with all of the local user data.
+        // Create a new SessionManager object with all of the local user data.
         SessionManager session = SessionManager.getInstance();
 
         // Get the user inputted IP and port number.
         String serverIP = session.getServerIp();
         int serverPort = session.getServerPort();
-        // Call the client.Client's connect() method to create the client socket and start listening for messages.
+        // Call the Client's connect() method to create the client socket and start listening for messages.
         localClient.connect(localUser, serverIP, serverPort);
     }
 
     /*
       addReceivedMessage(Message message)
-      A helper method used in client.Client.javathat appends a received message from another client to the local chat UI
+      A helper method used in Client.javathat appends a received message from another client to the local chat UI
     */
     public void addReceivedMessage(Message message) {
         // Add received messages from other clients to the chat UI.
@@ -48,7 +46,7 @@ public class ChatController {
 
     /*
       sendChatMessage(String messageText)
-      A helper method used in client.ChatComponent.java that appends a received message from another client to the local chat UI and sends the message to the server.
+      A helper method used in ChatComponent.java that appends a received message from another client to the local chat UI and sends the message to the server.
     */
     public void sendChatMessage(String messageText) {
         // Create a new Message object with the local user as the sender, and the text as the content.
@@ -58,6 +56,11 @@ public class ChatController {
         localClient.sendMessage(message);
         String currentTimestamp = java.time.LocalTime.now().format(java.time.format.DateTimeFormatter.ofPattern("HH:mm"));
         chatUI.appendMessage(localUser.getName(), currentTimestamp, messageText, true);
+    }
+
+    public void sendPrivateMessage(String messageText, int recipientId) {
+        Message message = new Message(localUser, messageText, recipientId);
+        localClient.sendMessage(message);
     }
 
     public User getLocalUser() { return this.localUser; }
