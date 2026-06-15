@@ -9,6 +9,9 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+import java.util.Arrays;
+import model.Message;
+
 
 public class ChatComponent extends VBox {
 
@@ -42,9 +45,37 @@ public class ChatComponent extends VBox {
 
         Runnable handleSendAction = () -> {
             String text = messageField.getText().trim();
+
+            // Make sure the textbox is not empty (otherwise, don't send)
             if (!text.isEmpty() && controller != null) {
-                controller.sendChatMessage(text);
-                messageField.clear();
+                String[] tokens = text.split(" ");
+
+                // Checks if the message is a private message
+                if(tokens.length > 0 && tokens[0].equalsIgnoreCase("/msg")) {
+                    // Makes sure that the private message follows /msg [recipientID] [messageBody]
+                    if(tokens.length >= 3) {
+                        try {
+
+                            // Grab the recipient ID and the message body
+                            int recipientID = Integer.parseInt(tokens[1]);
+                            String messageBody = String.join(" ", Arrays.copyOfRange(tokens, 2, tokens.length));
+
+                            // Send message if the message body is not empty
+                            if(!messageBody.isEmpty()) {
+                                controller.sendChatMessage(messageBody, recipientID);
+                                messageField.clear();
+                            }
+
+                        } catch (Exception e) {
+                            System.out.println("Invalid private message send.");
+                        }
+                    }
+                }
+
+                else {
+                    controller.sendChatMessage(text);
+                    messageField.clear();
+                }
             }
         };
 
@@ -55,7 +86,7 @@ public class ChatComponent extends VBox {
         this.getChildren().addAll(scrollPane, inputLayout);
     }
 
-    public void appendMessage(String senderName, String timestamp, String text, boolean isCurrentUser) {
+    public void appendMessage(String senderName, int senderID, String timestamp, String text, boolean isCurrentUser, Message.MessageType messageType) {
         Platform.runLater(() -> {
             // 1. Create the text styling for the message body
             Text messageText = new Text(text);
@@ -63,16 +94,16 @@ public class ChatComponent extends VBox {
             bubble.setPadding(new Insets(8, 12, 8, 12));
 
             javafx.scene.layout.HBox headerRow = new javafx.scene.layout.HBox(8); // 8px gap
-            
-            Text nameText = new Text(isCurrentUser ? "You" : senderName);
+
+            Text nameText = new Text(isCurrentUser ? "You" : senderName + " (ID: " + senderID + ") ");
             nameText.setStyle("-fx-font-weight: bold; -fx-font-size: 11px;");
-            
+
             Text timeText = new Text(timestamp != null ? timestamp : "");
-            timeText.setStyle("-fx-font-size: 9px; -fx-fill: #7f8c8d;"); 
+            timeText.setStyle("-fx-font-size: 9px; -fx-fill: #7f8c8d;");
             javafx.scene.layout.HBox.setMargin(timeText, new Insets(2, 0, 0, 0));
             headerRow.getChildren().addAll(nameText, timeText);
 
-            VBox stackedMessageBlock = new VBox(4); 
+            VBox stackedMessageBlock = new VBox(4);
             stackedMessageBlock.getChildren().addAll(headerRow, bubble);
 
             HBox messageRow = new HBox(stackedMessageBlock);
@@ -82,11 +113,22 @@ public class ChatComponent extends VBox {
                 messageText.setStyle("-fx-fill: white;");
                 headerRow.setAlignment(Pos.CENTER_RIGHT);
                 messageRow.setAlignment(Pos.CENTER_RIGHT);
+
             } else {
-                bubble.setStyle("-fx-background-color: #e1e1e1; -fx-background-radius: 10;");
-                messageText.setStyle("-fx-fill: black;");
-                headerRow.setAlignment(Pos.CENTER_LEFT);
-                messageRow.setAlignment(Pos.CENTER_LEFT);
+                switch(messageType) {
+                    case PUBLIC:
+                        bubble.setStyle("-fx-background-color: #e1e1e1; -fx-background-radius: 10;");
+                        messageText.setStyle("-fx-fill: black;");
+                        headerRow.setAlignment(Pos.CENTER_LEFT);
+                        messageRow.setAlignment(Pos.CENTER_LEFT);
+                        break;
+                    case PRIVATE:
+                        bubble.setStyle("-fx-background-color: #ef820d; -fx-background-radius: 10;");
+                        messageText.setStyle("-fx-fill: black;");
+                        headerRow.setAlignment(Pos.CENTER_LEFT);
+                        messageRow.setAlignment(Pos.CENTER_LEFT);
+                        break;
+                }
             }
 
             messageContainer.getChildren().add(messageRow);

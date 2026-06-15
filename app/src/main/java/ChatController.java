@@ -31,7 +31,7 @@ public class ChatController {
 
     /*
       addReceivedMessage(Message message)
-      A helper method used in Client.javathat appends a received message from another client to the local chat UI
+      A helper method used in Client.java that appends a received message from another client to the local chat UI
     */
     public void addReceivedMessage(Message message) {
         // Add received messages from other clients to the chat UI.
@@ -39,7 +39,8 @@ public class ChatController {
         // added this to get the sender's name and timestamp for display in the chat UI
         String senderName = message.getSender().getName();
         String timestamp = java.time.LocalTime.now().format(java.time.format.DateTimeFormatter.ofPattern("HH:mm"));
-        chatUI.appendMessage(senderName, timestamp, message.getMessageContent(), isMessageLocal);
+        int senderID = message.getSender().getId();
+        chatUI.appendMessage(senderName, senderID, timestamp, message.getMessageContent(), isMessageLocal, message.getType());
     }
 
 
@@ -55,7 +56,7 @@ public class ChatController {
         // Send the message to the server (other handlers) and append to local UI.
         localClient.sendMessage(message);
         String currentTimestamp = java.time.LocalTime.now().format(java.time.format.DateTimeFormatter.ofPattern("HH:mm"));
-        chatUI.appendMessage(localUser.getName(), currentTimestamp, messageText, true);
+        chatUI.appendMessage(localUser.getName(), localUser.getId(), currentTimestamp, messageText, true, message.getType());
     }
 
     public void sendChatMessage(String messageText, int recipientId) {
