@@ -58,7 +58,7 @@ public class ChatController {
         chatUI.appendMessage(localUser.getName(), currentTimestamp, messageText, true);
     }
 
-    public void sendPrivateMessage(String messageText, int recipientId) {
+    public void sendChatMessage(String messageText, int recipientId) {
         Message message = new Message(localUser, messageText, recipientId);
         localClient.sendMessage(message);
     }

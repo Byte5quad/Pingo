@@ -7,6 +7,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import server.ChatServer;
+
 import java.io.IOException;
 
 public class LoginController {
@@ -37,6 +39,9 @@ public class LoginController {
             SessionManager.getInstance().setLocalUser(user);
             SessionManager.getInstance().setServerIp(ip);
             SessionManager.getInstance().setServerPort(port);
+
+            // TODO: put inside if statement once checkbox is implemented on login screen
+            ChatServer.startServer(port);
 
             FXMLLoader loader = new FXMLLoader(getClass().getResource("hello-view.fxml"));
             Parent dashboardRoot = loader.load();
