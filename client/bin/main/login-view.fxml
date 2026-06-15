@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+
+<VBox alignment="CENTER" spacing="15.0" prefWidth="380.0" prefHeight="450.0" 
+      style="-fx-background-color: #1e1e24; -fx-font-family: 'Segoe UI', Helvetica;"
+      xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.LoginController">
+    
+    <padding>
+        <Insets bottom="30.0" left="40.0" right="40.0" top="30.0"/>
+    </padding>
+
+    <VBox alignment="CENTER" spacing="5.0">
+        <Label text="🏓 Pingo" style="-fx-text-fill: #ffffff; -fx-font-size: 32px; -fx-font-weight: bold;"/>
+        <Label text="Configure your session connection" style="-fx-text-fill: #8a8a93; -fx-font-size: 13px;"/>
+    </VBox>
+
+    <VBox spacing="5.0">
+        <Label text="Username" style="-fx-text-fill: #b3b3b9; -fx-font-weight: bold; -fx-font-size: 12px;"/>
+        <TextField fx:id="usernameField" promptText="e.g. Ishan" 
+                   style="-fx-background-color: #2a2a32; -fx-text-fill: white; -fx-background-radius: 6; -fx-padding: 8;"/>
+    </VBox>
+
+    <VBox spacing="5.0">
+        <Label text="User ID (Integer key)" style="-fx-text-fill: #b3b3b9; -fx-font-weight: bold; -fx-font-size: 12px;"/>
+        <TextField fx:id="userIdField" promptText="e.g. 101" 
+                   style="-fx-background-color: #2a2a32; -fx-text-fill: white; -fx-background-radius: 6; -fx-padding: 8;"/>
+    </VBox>
+
+    <HBox spacing="15.0">
+        <VBox HBox.hgrow="ALWAYS" spacing="5.0">
+            <Label text="Server IP" style="-fx-text-fill: #b3b3b9; -fx-font-weight: bold; -fx-font-size: 12px;"/>
+            <TextField fx:id="ipField" text="127.0.0.1" 
+                       style="-fx-background-color: #2a2a32; -fx-text-fill: white; -fx-background-radius: 6; -fx-padding: 8;"/>
+        </VBox>
+        <VBox prefWidth="100.0" spacing="5.0">
+            <Label text="Port" style="-fx-text-fill: #b3b3b9; -fx-font-weight: bold; -fx-font-size: 12px;"/>
+            <TextField fx:id="portField" text="1234" 
+                       style="-fx-background-color: #2a2a32; -fx-text-fill: white; -fx-background-radius: 6; -fx-padding: 8;"/>
+        </VBox>
+    </HBox>
+
+    <Label fx:id="errorLabel" wrapText="true" managed="false" visible="false"
+           style="-fx-text-fill: #ff5555; -fx-font-size: 12px; -fx-alignment: center;"/>
+
+    <Button fx:id="loginButton" text="Connect &amp; Launch" onAction="#handleLogin" maxWidth="Infinity"
+            style="-fx-background-color: #007acc; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14px; -fx-background-radius: 6; -fx-padding: 10; -fx-cursor: hand;"/>
+</VBox>

@@ -8,6 +8,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import server.ChatServer;
+import javafx.scene.control.CheckBox;
 
 import java.io.IOException;
 
@@ -19,6 +20,7 @@ public class LoginController {
     @FXML private TextField portField;
     @FXML private Label errorLabel;
     @FXML private Button loginButton;
+    @FXML private CheckBox startServerCheckbox;
 
     @FXML
     public void handleLogin() {
@@ -26,6 +28,7 @@ public class LoginController {
         String userIdStr = userIdField.getText().trim();
         String ip = ipField.getText().trim();
         String portStr = portField.getText().trim();
+        boolean startServerChoice = startServerCheckbox.isSelected();
 
         if (username.isEmpty() || userIdStr.isEmpty() || ip.isEmpty() || portStr.isEmpty()) {
             showError("All fields are required!");
@@ -40,8 +43,9 @@ public class LoginController {
             SessionManager.getInstance().setServerIp(ip);
             SessionManager.getInstance().setServerPort(port);
 
-            // TODO: put inside if statement once checkbox is implemented on login screen
-            ChatServer.startServer(port);
+            if(startServerChoice) {
+                ChatServer.startServer(port);
+            }
 
             FXMLLoader loader = new FXMLLoader(getClass().getResource("hello-view.fxml"));
             Parent dashboardRoot = loader.load();
