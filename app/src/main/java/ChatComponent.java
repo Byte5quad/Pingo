@@ -108,28 +108,28 @@ public class ChatComponent extends VBox {
 
             HBox messageRow = new HBox(stackedMessageBlock);
 
-            if (isCurrentUser) {
-                bubble.setStyle("-fx-background-color: #0078d4; -fx-background-radius: 10;");
-                messageText.setStyle("-fx-fill: white;");
-                headerRow.setAlignment(Pos.CENTER_RIGHT);
-                messageRow.setAlignment(Pos.CENTER_RIGHT);
-
-            } else {
-                switch(messageType) {
-                    case PUBLIC:
+            switch(messageType) {
+                case PUBLIC:
+                    if (isCurrentUser) {
+                        bubble.setStyle("-fx-background-color: #0078d4; -fx-background-radius: 10;");
+                        messageText.setStyle("-fx-fill: white;");
+                        headerRow.setAlignment(Pos.CENTER_RIGHT);
+                        messageRow.setAlignment(Pos.CENTER_RIGHT);
+                    }
+                    else {
                         bubble.setStyle("-fx-background-color: #e1e1e1; -fx-background-radius: 10;");
                         messageText.setStyle("-fx-fill: black;");
                         headerRow.setAlignment(Pos.CENTER_LEFT);
-                        messageRow.setAlignment(Pos.CENTER_LEFT);
-                        break;
-                    case PRIVATE:
-                        bubble.setStyle("-fx-background-color: #ef820d; -fx-background-radius: 10;");
-                        messageText.setStyle("-fx-fill: black;");
-                        headerRow.setAlignment(Pos.CENTER_LEFT);
-                        messageRow.setAlignment(Pos.CENTER_LEFT);
-                        break;
-                }
+                    }
+                    break;
+                case PRIVATE:
+                    bubble.setStyle("-fx-background-color: #ef820d; -fx-background-radius: 10;");
+                    messageText.setStyle("-fx-fill: black;");
+                    headerRow.setAlignment(Pos.CENTER_LEFT);
+                    messageRow.setAlignment(Pos.CENTER_LEFT);
+                    break;
             }
+
 
             messageContainer.getChildren().add(messageRow);
             Platform.runLater(() -> scrollPane.setVvalue(1.0));
