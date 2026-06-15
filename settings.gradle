@@ -1,4 +1,3 @@
 rootProject.name = 'Pingo'
 include 'shared'
-include 'server'
-include 'client'
+include 'app'

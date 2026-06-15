@@ -1,9 +1,0 @@
-apply plugin: 'application'
-
-application {
-    mainClass = 'server.ServerLauncher'
-}
-
-dependencies {
-    implementation project(':shared')
-}
