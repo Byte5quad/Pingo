@@ -116,6 +116,7 @@ public class ChatComponent extends VBox {
                         headerRow.setAlignment(Pos.CENTER_RIGHT);
                         messageRow.setAlignment(Pos.CENTER_RIGHT);
                     }
+                    
                     else {
                         bubble.setStyle("-fx-background-color: #e1e1e1; -fx-background-radius: 10;");
                         messageText.setStyle("-fx-fill: black;");

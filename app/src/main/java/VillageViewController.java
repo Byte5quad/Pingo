@@ -7,6 +7,7 @@ import javafx.scene.layout.VBox;
 public class VillageViewController {
 
     private User localUser;
+    private String selectedVillage;
 
     @FXML private Label villageHeaderTitle;
     @FXML private Label villageHeaderSub;
@@ -17,6 +18,7 @@ public class VillageViewController {
     }
 
     public void setVillageData(String villageName) {
+        this.selectedVillage = villageName;
         villageHeaderTitle.setText(villageName);
         villageHeaderSub.setText("Welcome to the " + villageName + " hub. Select a department to view available courses.");
 
@@ -53,7 +55,7 @@ public class VillageViewController {
             return;
         }
 
-        ChatController controller = new ChatController(localUser);
+        ChatController controller = new ChatController(localUser, getChatRoomName(departmentName));
         ChatComponent chatUI = controller.getChatComponent();
 
         chatUI.setPrefWidth(700);
@@ -62,6 +64,10 @@ public class VillageViewController {
 
         departmentsGrid.getChildren().add(chatUI);
         controller.start();
+    }
+
+    private String getChatRoomName(String selectedDepartment) {
+        return selectedVillage + "-" + selectedDepartment;
     }
 
     private VBox createDepartmentCard(String title, String count) {

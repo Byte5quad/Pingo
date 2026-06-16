@@ -34,7 +34,7 @@ public class ClientHandler implements Runnable {
 
             //Broadcast join to all clients
             ChatServer.broadcastToAll(
-                    new Message(clientUser, clientUser.getName() + " has joined the chat"),
+                    new Message(clientUser, clientUser.getName() + " has joined a chat room.", null),
                     this);
 
             //Read messages sent from this client and send it to all other clients using sendMessageToAll.
@@ -56,7 +56,7 @@ public class ClientHandler implements Runnable {
             if (clientUser != null) {
                 ChatServer.removeClient(clientUser.getId());
                 ChatServer.broadcastToAll(
-                        new Message(clientUser, clientUser.getName() + " had left the chat"),
+                        new Message(clientUser, clientUser.getName() + " had left the chat", null),
                         this);
             }
 
@@ -92,10 +92,11 @@ public class ClientHandler implements Runnable {
             recipient.sendMessage(message);
             this.sendMessage(message);
         } else {
+            // Send a System private message back to the client/sender
             this.sendMessage(
                     new Message(
                             new User("System", -1),
-                            "User is not online or does not exist"));
+                            "User is not online or does not exist", clientUser.getId()));
         }
     }
 

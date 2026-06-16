@@ -21,7 +21,9 @@ public class Message implements Serializable {
     private LocalDateTime timestamp;
     private MessageType type;
     private int recipientId;
+    private String chatRoom;
 
+    // Constructor for private messages
     public Message(User sender, String messageContent, int recipientId) {
         this.sender = sender;
         this.messageContent = messageContent;
@@ -30,11 +32,14 @@ public class Message implements Serializable {
 
         // Gets the current date/time from the system
         this.timestamp = LocalDateTime.now();
+        this.chatRoom = null;
     }
 
-    public Message(User sender, String messageContent) {
+    // Constructor for public messages
+    public Message(User sender, String messageContent, String chatRoom) {
         this(sender, messageContent, -1);
         this.type = MessageType.PUBLIC;
+        this.chatRoom = chatRoom;
     }
 
     // Getters
@@ -57,6 +62,8 @@ public class Message implements Serializable {
     public int getRecipientId() {
         return recipientId;
     }
+
+    public String getChatRoom() { return chatRoom; }
 
     // Formatting for the LocalDateTime
     public String getFormattedTime() {

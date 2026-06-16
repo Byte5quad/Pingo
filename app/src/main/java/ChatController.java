@@ -5,13 +5,15 @@ public class ChatController {
     private User localUser;
     private ChatComponent chatUI;
     private Client localClient;
+    private String currentChatRoom;
 
-    public ChatController(User localUser) {
+    public ChatController(User localUser, String currentChatRoom) {
         this.localUser = localUser;
         // Create a new ChatComponent, pass in this ChatController object.
         this.chatUI = new ChatComponent(this);
         // Call the Client constructor, and pass in this instance of ChatController
         this.localClient = new Client(this);
+        this.currentChatRoom = currentChatRoom;
     }
 
     /*
@@ -34,7 +36,16 @@ public class ChatController {
       A helper method used in Client.java that appends a received message from another client to the local chat UI
     */
     public void addReceivedMessage(Message message) {
-        // Add received messages from other clients to the chat UI.
+        // If the message is public, check if it's from the current chat room.
+        if(message.getType() == Message.MessageType.PUBLIC) {
+            String messageRoom = message.getChatRoom();
+            // Don't add to UI if the message is not from the current chat room.
+            if(messageRoom != null && !messageRoom.equals(currentChatRoom)) {
+              return;
+            }
+        }
+
+        // Add received messages from other clients to the chat UI
         boolean isMessageLocal = message.getSender().equals(localUser);
         // added this to get the sender's name and timestamp for display in the chat UI
         String senderName = message.getSender().getName();
@@ -47,11 +58,11 @@ public class ChatController {
 
     /*
       sendChatMessage(String messageText)
-      A helper method used in ChatComponent.java that appends a received message from another client to the local chat UI and sends the message to the server.
+      A helper method used in ChatComponent.java that appends a received message from the to the local chat UI and sends the message to the server.
     */
     public void sendChatMessage(String messageText) {
-        // Create a new Message object with the local user as the sender, and the text as the content.
-        Message message = new Message(localUser, messageText);
+        // Create a new Message object with the local user as the sender, the text as the content, and the current chat room.
+        Message message = new Message(localUser, messageText, currentChatRoom);
 
         // Send the message to the server (other handlers) and append to local UI.
         localClient.sendMessage(message);
@@ -67,4 +78,5 @@ public class ChatController {
     public User getLocalUser() { return this.localUser; }
     public ChatComponent getChatComponent() { return this.chatUI; }
     public Client getLocalClient() { return this.localClient; }
+    public String getCurrentChatRoom() { return this.currentChatRoom; }
 }
