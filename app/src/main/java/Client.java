@@ -9,7 +9,7 @@ public class Client {
     private Socket clientSocket;
     private ObjectOutputStream out;
     private ObjectInputStream in;
-    private boolean isConnected = false;
+    private volatile boolean isConnected = false;
     private ChatController controller;
 
     public Client(ChatController controller) {
@@ -49,6 +49,7 @@ public class Client {
                 }
             });
 
+            inputThread.setDaemon(true);
             inputThread.start();
 
         } catch(IOException e) {
@@ -62,6 +63,7 @@ public class Client {
         // temporary code for message sending, will probably need to change for MVP
         try {
             if(isConnected) {
+                out.reset();
                 out.writeObject(message);
                 out.flush();
             }

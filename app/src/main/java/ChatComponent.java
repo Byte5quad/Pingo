@@ -48,6 +48,8 @@ public class ChatComponent extends VBox {
 
             // Make sure the textbox is not empty (otherwise, don't send)
             if (!text.isEmpty() && controller != null) {
+
+                // Tokenize the text
                 String[] tokens = text.split(" ");
 
                 // Checks if the message is a private message
@@ -60,7 +62,7 @@ public class ChatComponent extends VBox {
                             int recipientID = Integer.parseInt(tokens[1]);
                             String messageBody = String.join(" ", Arrays.copyOfRange(tokens, 2, tokens.length));
 
-                            // Send message if the message body is not empty
+                            // Send a private message if the message body is not empty
                             if(!messageBody.isEmpty()) {
                                 controller.sendChatMessage(messageBody, recipientID);
                                 messageField.clear();
@@ -72,6 +74,7 @@ public class ChatComponent extends VBox {
                     }
                 }
 
+                // If the message is not a private, send a public message.
                 else {
                     controller.sendChatMessage(text);
                     messageField.clear();
@@ -108,28 +111,35 @@ public class ChatComponent extends VBox {
 
             HBox messageRow = new HBox(stackedMessageBlock);
 
-            switch(messageType) {
-                case PUBLIC:
-                    if (isCurrentUser) {
-                        bubble.setStyle("-fx-background-color: #0078d4; -fx-background-radius: 10;");
-                        messageText.setStyle("-fx-fill: white;");
+            // Sets the bubble styling (color and location) based on if a message is from the current user,
+            // other users, or if the message is public or private.
+			switch (messageType) {
+                // Public messages use a conventional blue and gray text bubble color scheme.
+				case PUBLIC -> {
+					if (isCurrentUser) {
+						bubble.setStyle("-fx-background-color: #0078d4; -fx-background-radius: 10;");
+						messageText.setStyle("-fx-fill: white;");
+						headerRow.setAlignment(Pos.CENTER_RIGHT);
+						messageRow.setAlignment(Pos.CENTER_RIGHT);
+					} else {
+						bubble.setStyle("-fx-background-color: #e1e1e1; -fx-background-radius: 10;");
+						messageText.setStyle("-fx-fill: black;");
+						headerRow.setAlignment(Pos.CENTER_LEFT);
+					}
+				}
+                // Private Messages are colored in orange.
+				case PRIVATE -> {
+					bubble.setStyle("-fx-background-color: #ef820d; -fx-background-radius: 10;");
+					messageText.setStyle("-fx-fill: black;");
+                    if (!isCurrentUser) {
+                        headerRow.setAlignment(Pos.CENTER_LEFT);
+                        messageRow.setAlignment(Pos.CENTER_LEFT);
+                    } else {
                         headerRow.setAlignment(Pos.CENTER_RIGHT);
                         messageRow.setAlignment(Pos.CENTER_RIGHT);
                     }
-                    
-                    else {
-                        bubble.setStyle("-fx-background-color: #e1e1e1; -fx-background-radius: 10;");
-                        messageText.setStyle("-fx-fill: black;");
-                        headerRow.setAlignment(Pos.CENTER_LEFT);
-                    }
-                    break;
-                case PRIVATE:
-                    bubble.setStyle("-fx-background-color: #ef820d; -fx-background-radius: 10;");
-                    messageText.setStyle("-fx-fill: black;");
-                    headerRow.setAlignment(Pos.CENTER_LEFT);
-                    messageRow.setAlignment(Pos.CENTER_LEFT);
-                    break;
-            }
+				}
+			}
 
 
             messageContainer.getChildren().add(messageRow);
