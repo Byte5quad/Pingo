@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="VillageViewController"
+      spacing="30" style="-fx-padding: 40; -fx-background-color: #ffffff;"
+      VBox.vgrow="ALWAYS">
+
+    <VBox spacing="6">
+        <Label fx:id="villageHeaderTitle" text="Village Departments" 
+               style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #1e1e24;"/>
+        <Label fx:id="villageHeaderSub" text="Select a department to view available courses." 
+               style="-fx-font-size: 14px; -fx-text-fill: #64748b;"/>
+    </VBox>
+
+    <ScrollPane fitToWidth="true" style="-fx-background-color: transparent; -fx-background-insets: 0; -fx-padding: 0;" VBox.vgrow="ALWAYS">
+        
+        <TilePane fx:id="departmentsGrid" 
+                  hgap="20" vgap="20" 
+                  prefColumns="3" 
+                  tileAlignment="TOP_LEFT"
+                  alignment="TOP_LEFT"
+                  style="-fx-background-color: transparent; -fx-padding: 20 30 20 30;"/>
+                  
+    </ScrollPane>
+
+</VBox>

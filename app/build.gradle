@@ -1,0 +1,15 @@
+apply plugin: 'application'
+apply plugin: 'org.openjfx.javafxplugin'
+
+application {
+    mainClass = 'Launcher'
+}
+
+javafx {
+    version = "21"
+    modules = ['javafx.controls', 'javafx.fxml']
+}
+
+dependencies {
+    implementation project(':shared')
+}

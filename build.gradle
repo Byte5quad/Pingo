@@ -1,31 +1,24 @@
 plugins {
-    id 'java'
-    id 'application'
-    id 'org.openjfx.javafxplugin' version '0.1.0'
+    id 'org.openjfx.javafxplugin' version '0.1.0' apply false
 }
 
-group = 'com.bytesquad'
-version = '1.0-SNAPSHOT'
+subprojects {
+    apply plugin: 'java'
 
-repositories {
-    mavenCentral()
-}
+    group = 'com.bytesquad'
+    version = '1.0-SNAPSHOT'
 
-application {
-    mainClass = 'com.bytesquad.pingo.Launcher'
-}
+    repositories {
+        mavenCentral()
+    }
 
-javafx {
-    version = "21"
-    modules = ['javafx.controls', 'javafx.fxml']
-}
+    dependencies {
+        testImplementation platform('org.junit:junit-bom:5.10.0')
+        testImplementation 'org.junit.jupiter:junit-jupiter'
+        testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    }
 
-dependencies {
-    testImplementation platform('org.junit:junit-bom:5.10.0')
-    testImplementation 'org.junit.jupiter:junit-jupiter'
-    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-}
-
-test {
-    useJUnitPlatform()
+    test {
+        useJUnitPlatform()
+    }
 }
