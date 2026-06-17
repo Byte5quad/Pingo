@@ -31,6 +31,12 @@ public class ChatController {
         localClient.connect(localUser, serverIP, serverPort);
     }
 
+    public void stop() {
+        if (localClient != null) {
+            localClient.disconnect();
+        }
+    }
+
     /*
       addReceivedMessage(Message message)
       A helper method used in Client.java that appends a received message from another client to the local chat UI

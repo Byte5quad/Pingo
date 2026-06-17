@@ -8,7 +8,9 @@ public class VillageViewController {
 
     private User localUser;
     private String selectedVillage;
-    private ChatController currentChatController;
+
+    private ChatController currentController = null;
+    private String currentDepartment = null;
 
     @FXML private Label villageHeaderTitle;
     @FXML private Label villageHeaderSub;
@@ -41,6 +43,18 @@ public class VillageViewController {
     }
 
     private void openChatForDepartment(String departmentName) {
+
+        if (departmentName.equals(currentDepartment) && currentController != null) {
+            return;
+        }
+
+        if (currentController != null) {
+            currentController.stop();
+            currentController = null;
+        }
+
+        currentDepartment = departmentName;
+
         villageHeaderTitle.setText(departmentName);
         villageHeaderSub.setText("Live chat channel for " + departmentName + " students.");
 
@@ -56,20 +70,17 @@ public class VillageViewController {
             return;
         }
 
-        if (currentChatController != null && currentChatController.getLocalClient().isConnected()) {
-            currentChatController.getLocalClient().disconnect();
-            currentChatController = null;
-        }
+        ChatController controller = new ChatController(localUser, getChatRoomName(departmentName));
+        currentController = controller;
 
-        currentChatController = new ChatController(localUser, getChatRoomName(departmentName));
-        ChatComponent chatUI = currentChatController.getChatComponent();
+        ChatComponent chatUI = controller.getChatComponent();
 
         chatUI.setPrefWidth(700);
         chatUI.setMinHeight(400);
         chatUI.setMaxHeight(400);
 
         departmentsGrid.getChildren().add(chatUI);
-        currentChatController.start();
+        controller.start();
     }
 
     private String getChatRoomName(String selectedDepartment) {

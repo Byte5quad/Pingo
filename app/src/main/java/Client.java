@@ -61,10 +61,12 @@ public class Client {
 
     public void disconnect() {
 		try {
-			in.close();
-			out.close();
-			clientSocket.close();
-			isConnected = false;
+				in.close();
+				out.close();
+			if (clientSocket != null && !clientSocket.isClosed()) {
+				clientSocket.close();
+				isConnected = false;
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
