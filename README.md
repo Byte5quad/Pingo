@@ -128,7 +128,7 @@ The team also performed manual integration testing across multiple clients and t
  
 | Member | Role |
 |--------|------|
-| Saba Feilizadeh | Team Lead, Frontend / Architecture |
+| Saba Feilizadeh | Team Lead, Frontend|
 | Ishan Mishra | Frontend |
 | Ryan Tran | Backend |
 | Aaron Dbritto | Backend |
