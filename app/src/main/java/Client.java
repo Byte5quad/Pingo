@@ -59,6 +59,17 @@ public class Client {
 
     }
 
+    public void disconnect() {
+		try {
+			in.close();
+			out.close();
+			clientSocket.close();
+			isConnected = false;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
     public void sendMessage(Message message) {
         // temporary code for message sending, will probably need to change for MVP
         try {
@@ -72,5 +83,9 @@ public class Client {
             e.printStackTrace();
             System.out.println("Error sending message.");
         }
+    }
+
+    public boolean isConnected() {
+        return isConnected;
     }
 }

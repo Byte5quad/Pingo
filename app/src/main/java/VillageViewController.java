@@ -8,6 +8,7 @@ public class VillageViewController {
 
     private User localUser;
     private String selectedVillage;
+    private ChatController currentChatController;
 
     @FXML private Label villageHeaderTitle;
     @FXML private Label villageHeaderSub;
@@ -55,15 +56,20 @@ public class VillageViewController {
             return;
         }
 
-        ChatController controller = new ChatController(localUser, getChatRoomName(departmentName));
-        ChatComponent chatUI = controller.getChatComponent();
+        if (currentChatController != null && currentChatController.getLocalClient().isConnected()) {
+            currentChatController.getLocalClient().disconnect();
+            currentChatController = null;
+        }
+
+        currentChatController = new ChatController(localUser, getChatRoomName(departmentName));
+        ChatComponent chatUI = currentChatController.getChatComponent();
 
         chatUI.setPrefWidth(700);
         chatUI.setMinHeight(400);
         chatUI.setMaxHeight(400);
 
         departmentsGrid.getChildren().add(chatUI);
-        controller.start();
+        currentChatController.start();
     }
 
     private String getChatRoomName(String selectedDepartment) {
