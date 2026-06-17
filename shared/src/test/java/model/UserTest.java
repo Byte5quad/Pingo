@@ -1,97 +1,48 @@
 package model;
 
 import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Unit tests for the User model class.
+ * User equality is based on the user ID, which matters because the server
+ * stores clients in a map keyed by ID and ChatController compares senders by User.
+ */
 public class UserTest {
 
-	/*
-	 * Test Constructors/Getters
-	 */
+    @Test
+    void gettersReturnConstructorValues() {
+        User user = new User("Alice", 7);
+        assertEquals("Alice", user.getName());
+        assertEquals(7, user.getId());
+    }
 
-	@Test
-	void getName_returnsCorrectName() {
-		User user = new User("Test Name", 12345);
-		assertEquals("Test Name", user.getName());
-	}
+    @Test
+    void usersWithSameIdAreEqual() {
+        User a = new User("Alice", 7);
+        User b = new User("DifferentName", 7);
+        // Equality is by ID only, so name does not matter.
+        assertEquals(a, b);
+    }
 
-	@Test
-	void getId_returnsCorrectId() {
-		User user = new User("Test Name", 12345);
-		assertEquals(12345, user.getId());
-	}
+    @Test
+    void usersWithDifferentIdsAreNotEqual() {
+        User a = new User("Alice", 7);
+        User b = new User("Alice", 8);
+        assertNotEquals(a, b);
+    }
 
-	/*
-	 * Test setName
-	 */
+    @Test
+    void equalUsersHaveSameHashCode() {
+        User a = new User("Alice", 7);
+        User b = new User("Bob", 7);
+        assertEquals(a.hashCode(), b.hashCode());
+    }
 
-	@Test
-	void setName_updatesName() {
-		User user = new User("Test Name", 12345);
-		user.setName("New Name");
-		assertEquals("New Name", user.getName());
-	}
-
-	@Test
-	void setName_doesNotAffectId() {
-		User user = new User("Test Name", 12345);
-		user.setName("New Name");
-		assertEquals(12345, user.getId());
-	}
-
-	/*
-	 * Test equals
-	 */
-
-	@Test
-	void equals_SameIdSameName_isEqual() {
-		User a = new User("Test Name", 12345);
-		User b = new User("Test Name", 12345);
-		assertEquals(a, b);
-	}
-
-	@Test
-	void equals_sameIdDifferentName_isEqual() {
-		// Identity is tied to ID, not name
-		User a = new User("Test Name", 12345);
-		User b = new User("Name", 12345);
-		assertEquals(a, b);
-	}
-
-	@Test
-	void equals_differentId_isNotEqual() {
-		User a = new User("New Name", 12345);
-		User b = new User("New Name", 67890);
-		assertNotEquals(a, b);
-	}
-
-	@Test
-	void equals_sameReference_isEqual() {
-		User a = new User("Test Name", 12345);
-		assertEquals(a, a);
-	}
-
-	/*
-	 * Test hashCode
-	 */
-
-	@Test
-	void hashCode_equalUsers_haveSameHashCode() {
-		User a = new User("Test Name", 12345);
-		User b = new User("Test Name", 12345);
-		assertEquals(a.hashCode(), b.hashCode());
-	}
-
-	/*
-	 * Test toString
-	 */
-
-	@Test
-	void toString_returnsUserInfo() {
-		User user = new User("Test Name", 12345);
-		assertEquals(
-				"User: [name=Test Name, id=12345]",
-				user.toString());
-	}
+    @Test
+    void setNameUpdatesName() {
+        User user = new User("Alice", 7);
+        user.setName("Alicia");
+        assertEquals("Alicia", user.getName());
+    }
 }

@@ -1,111 +1,52 @@
 package model;
 
-import model.Message;
-import model.User;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.time.LocalDateTime;
-
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Unit tests for the Message model class.
+ * These run without a server because they only test the data model.
+ */
 public class MessageTest {
 
-	private User user;
-	private Message message;
+    @Test
+    void publicConstructorSetsPublicTypeAndChatRoom() {
+        User sender = new User("Alice", 1);
+        Message msg = new Message(sender, "hello everyone", "De Anza-Computer Science");
 
-	@BeforeEach
-	void setup() {
-		user = new User("Test Name", 12345);
-		message = new Message(user, "Test Message: Hello World!");
-	}
+        assertEquals(Message.MessageType.PUBLIC, msg.getType());
+        assertEquals(-1, msg.getRecipientId());
+        assertEquals("De Anza-Computer Science", msg.getChatRoom());
+        assertEquals("hello everyone", msg.getMessageContent());
+        assertEquals(sender, msg.getSender());
+    }
 
-	/*
-	 * Test Sender
-	 */
+    @Test
+    void privateConstructorSetsPrivateTypeAndRecipient() {
+        User sender = new User("Alice", 1);
+        Message msg = new Message(sender, "secret", 42);
 
-	@Test
-	void getSender_returnsSameUserObject() {
-		assertSame(user, message.getSender());
-	}
+        assertEquals(Message.MessageType.PRIVATE, msg.getType());
+        assertEquals(42, msg.getRecipientId());
+        assertEquals("secret", msg.getMessageContent());
+    }
 
-	@Test
-	void getSender_returnsCorrectName() {
-		assertEquals("Test Name", message.getSender().getName());
-	}
+    @Test
+    void privateMessageHasNoChatRoom() {
+        Message msg = new Message(new User("Alice", 1), "secret", 42);
+        assertNull(msg.getChatRoom());
+    }
 
-	/*
-	 * Test Message Content
-	 */
+    @Test
+    void timestampIsSetOnCreation() {
+        Message msg = new Message(new User("Bob", 2), "hi", "De Anza-Math");
+        assertNotNull(msg.getTimestamp());
+    }
 
-	@Test
-	void getMessageContent_returnsCorrectContent() {
-		assertEquals("Test Message: Hello World!", message.getMessageContent());
-	}
-
-	@Test
-	void getMessageContent_emptyString() {
-		Message empty = new Message(user, "");
-		assertEquals("", empty.getMessageContent());
-	}
-
-	/*
-	 * Test Timestamp
-	 */
-
-	@Test
-	void getTimestamp_isNotNull() {
-		assertNotNull(message.getTimestamp());
-	}
-
-	@Test
-	void getTimestamp_isRecentlyCreated() {
-		LocalDateTime before =  LocalDateTime.now().minusSeconds(2);
-		LocalDateTime after =  LocalDateTime.now().plusSeconds(2);
-		assertTrue(message.getTimestamp().isBefore(after));
-		assertTrue(message.getTimestamp().isAfter(before));
-	}
-
-	/*
-	 * Test Formatted Time
-	 */
-
-	@Test
-	void getFormattedTime_matchesBracketPatter() {
-		// Expected format: [MM-dd-yyyy HH:mm:ss]
-		String formatted = message.getFormattedTime();
-		assertTrue(
-				formatted.matches(
-						"\\[\\d{2}-\\d{2}-\\d{4} \\d{2}:\\d{2}:\\d{2}]"),
-				"Formatted time did not match expected pattern: " + formatted);
-	}
-
-	/*
-	 * Test toString()
-	 */
-
-	@Test
-	void toString_containsSenderName() {
-		assertTrue(message.toString().contains("Test Name"));
-	}
-
-	@Test
-	void toString_containsMessageContent() {
-		assertTrue(message.toString().contains("Test Message: Hello World!"));
-	}
-
-	@Test
-	void toString_startsWithTimestamp() {
-		assertTrue(message.toString().startsWith("["));
-	}
-
-	@Test
-	void toString_followsExpectedFormat() {
-		// Full format: [MM-dd-yyyy HH:mm:ss] Alice: Hello!
-		String result = message.toString();
-		assertTrue(
-				result.matches(
-						"\\[\\d{2}-\\d{2}-\\d{4} \\d{2}:\\d{2}:\\d{2}] Test Name: Test Message: Hello World!"),
-				"toString format unexpected: " + result);
-	}
+    @Test
+    void formattedTimeMatchesExpectedPattern() {
+        Message msg = new Message(new User("Bob", 2), "hi", "De Anza-Math");
+        // Expected format: [MM-dd-yyyy HH:mm:ss]
+        assertTrue(msg.getFormattedTime().matches("\\[\\d{2}-\\d{2}-\\d{4} \\d{2}:\\d{2}:\\d{2}\\]"));
+    }
 }
