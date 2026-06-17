@@ -56,7 +56,7 @@ public class ClientHandler implements Runnable {
             if (clientUser != null) {
                 ChatServer.removeClient(clientUser.getId());
                 ChatServer.broadcastToAll(
-                        new Message(clientUser, clientUser.getName() + " had left the chat", null),
+                        new Message(clientUser, clientUser.getName() + " has left the chat", null),
                         this);
             }
 
